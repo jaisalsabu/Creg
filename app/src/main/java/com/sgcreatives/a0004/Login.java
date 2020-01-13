@@ -104,7 +104,7 @@ public class Login extends AppCompatActivity  {
           tv2.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
-                  Intent io= new Intent(getApplicationContext(),Registration.class);
+                  Intent io= new Intent(getApplicationContext(),Token.class);
                   startActivity(io);
               }
           });

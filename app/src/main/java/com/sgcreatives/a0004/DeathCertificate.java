@@ -1,4 +1,6 @@
 package com.sgcreatives.a0004;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,6 +31,7 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
     String[] sex = {"Male", "Female", "Others"};
     EditText txt13, txt14, txt15, txt16;
     Spinner gender1;
+    SharedPreferences sharedPreferences;
     Button btn5, btn6;
 
     @Override
@@ -41,6 +44,7 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
         txt15 = findViewById(R.id.bc_dob);
         txt16 = findViewById(R.id.bc_fathername);
         btn5 = findViewById(R.id.bc_apply);
+        sharedPreferences = getSharedPreferences("asd", MODE_PRIVATE);
         gender1.setOnItemSelectedListener(this);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sex);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -109,6 +113,17 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
 
 
         });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("name", txt13.getText().toString());
+                editor.apply();
+                Intent ias=new Intent(getApplicationContext(),Token.class);
+                startActivity(ias);
+
+            }
+        });
 
 
     }
@@ -123,8 +138,6 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
 
     }
 }
-
-
 
 
 
