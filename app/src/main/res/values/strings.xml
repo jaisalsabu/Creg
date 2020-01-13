@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Creg</string>
+    <string name="options_prompt">Choose a Certificate</string>
+    <string-array name="certificates_arrays">
+        <item>Birth Certificate</item>
+        <item>Death Certificate</item>
+        <item>Voters Id </item>
+        <item>Adhaar</item>
+        <item>Income Certificate</item>
+    </string-array>
+    <string-array name="gender">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Others</item>
+    </string-array>
+</resources>
