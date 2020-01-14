@@ -1,14 +1,13 @@
 package com.sgcreatives.a0004;
 
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,10 +26,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class BirthCertficate extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] sex = {"Male", "Female", "Others"};
     EditText txt9, txt10, txt11, txt12;
     Spinner gender;
+    String token;
     Button btn3, btn4;
 
     @Override
@@ -38,7 +40,7 @@ public class BirthCertficate extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_birth_certficate);
         txt9 = findViewById(R.id.bc_name);
-        gender =findViewById(R.id.gender);
+        gender = findViewById(R.id.gender);
         txt10 = findViewById(R.id.bc_place);
         txt11 = findViewById(R.id.bc_dob);
         txt12 = findViewById(R.id.bc_fathername);
@@ -91,7 +93,7 @@ public class BirthCertficate extends AppCompatActivity implements AdapterView.On
                             params.put("name", txt9.getText().toString());
                             params.put("place", txt10.getText().toString());
                             params.put("DOB", txt11.getText().toString());
-                            params.put("sex",gender.getSelectedItem().toString());
+                            params.put("sex", gender.getSelectedItem().toString());
                             params.put("fathersname", txt12.getText().toString());
 
 //returning parameter
@@ -110,6 +112,55 @@ public class BirthCertficate extends AppCompatActivity implements AdapterView.On
             }
 
 
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/retrival1.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+//If we are getting success from server
+                            Toast.makeText(BirthCertficate.this, response, Toast.LENGTH_LONG).show();
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject json_obj = jsonArray.getJSONObject(i);
+                                    token = json_obj.getString("name");
+                                    new SweetAlertDialog(BirthCertficate.this)
+                                            .setTitleText(token)
+                                            .show();
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+//error handling
+                        }
+
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+//Adding parameters to request
+
+                    params.put("name",txt9.getText().toString());
+
+//returning parameter
+                    return params;
+                }
+            };
+
+//Adding the string request to the queue
+                RequestQueue requestQueue = Volley.newRequestQueue(BirthCertficate.this);
+                requestQueue.add(stringRequest);
+
+            }
         });
 
 

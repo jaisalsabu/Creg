@@ -26,10 +26,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class Votersid extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] sex = {"Male", "Female", "Others"};
     EditText txt17, txt18, txt19, txt20;
     Spinner gender3;
+    String tokenthree;
     Button btn7, btn8;
 
     @Override
@@ -51,7 +54,7 @@ public class Votersid extends AppCompatActivity implements AdapterView.OnItemSel
             @Override
             public void onClick(View view) {
                 if (!(txt17.getText().toString().isEmpty() || txt18.getText().toString().isEmpty() || txt19.getText().toString().isEmpty() || txt20.getText().toString().isEmpty())) {
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "",
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/votersid.php",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -89,7 +92,7 @@ public class Votersid extends AppCompatActivity implements AdapterView.OnItemSel
 
                             params.put("name", txt17.getText().toString());
                             params.put("fhname", txt18.getText().toString());
-                            params.put("DOB", txt19.getText().toString());
+                            params.put("dob", txt19.getText().toString());
                             params.put("sex",gender3.getSelectedItem().toString());
                             params.put("address", txt20.getText().toString());
 
@@ -109,6 +112,56 @@ public class Votersid extends AppCompatActivity implements AdapterView.OnItemSel
             }
 
 
+        });
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/retrival3.php",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+//If we are getting success from server
+                                Toast.makeText(Votersid.this, response, Toast.LENGTH_LONG).show();
+                                try {
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json_obj = jsonArray.getJSONObject(i);
+                                        tokenthree = json_obj.getString("name");
+                                        new SweetAlertDialog(Votersid.this)
+                                                .setTitleText(tokenthree)
+                                                .show();
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+//error handling
+                            }
+
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+//Adding parameters to request
+
+                        params.put("name", txt17.getText().toString());
+
+//returning parameter
+                        return params;
+                    }
+                };
+
+//Adding the string request to the queue
+                RequestQueue requestQueue = Volley.newRequestQueue(Votersid.this);
+                requestQueue.add(stringRequest);
+
+            }
         });
 
 

@@ -1,6 +1,7 @@
 package com.sgcreatives.a0004;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.util.Map;
 public class Login extends AppCompatActivity  {
     EditText txt7,txt8;
     TextView tv2, tv3;
+    SharedPreferences sharedPreferences;
     Button btn2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class Login extends AppCompatActivity  {
          tv2= findViewById(R.id.register_now);
          tv3 = findViewById(R.id.forgot_pass);
           btn2 =findViewById(R.id.login_proceed);
+          sharedPreferences=getSharedPreferences("asd",MODE_PRIVATE);
           btn2.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
@@ -50,6 +53,7 @@ public class Login extends AppCompatActivity  {
 //If we are getting success from server
                                       if (response.equals("Success")) {
                                           Toast.makeText(Login.this,"Logged in Succesfully", Toast.LENGTH_LONG).show();
+
                                           Intent ii = new Intent(getApplicationContext(),optionspage.class);
                                           startActivity(ii);
                                       }
@@ -101,11 +105,22 @@ public class Login extends AppCompatActivity  {
                   }
               }
           });
+          tv3.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  SharedPreferences.Editor editor = sharedPreferences.edit();
+                  editor.putString("email",txt7.getText().toString());
+                  editor.apply();
+                  Intent io= new Intent(getApplicationContext(),forgotpassword.class);
+                  startActivity(io);
+              }
+          });
           tv2.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
-                  Intent io= new Intent(getApplicationContext(),Token.class);
-                  startActivity(io);
+                  Intent is= new Intent(getApplicationContext(),Registration.class);
+                  startActivity(is);
+
               }
           });
     }

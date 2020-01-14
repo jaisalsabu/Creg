@@ -27,11 +27,13 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class DeathCertificate extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] sex = {"Male", "Female", "Others"};
     EditText txt13, txt14, txt15, txt16;
     Spinner gender1;
-    SharedPreferences sharedPreferences;
+    String tokentwo;
     Button btn5, btn6;
 
     @Override
@@ -39,12 +41,11 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_death_certificate);
         txt13 = findViewById(R.id.bc_name);
-        gender1 =findViewById(R.id.gender);
+        gender1 = findViewById(R.id.gender);
         txt14 = findViewById(R.id.bc_place);
         txt15 = findViewById(R.id.bc_dob);
         txt16 = findViewById(R.id.bc_fathername);
         btn5 = findViewById(R.id.bc_apply);
-        sharedPreferences = getSharedPreferences("asd", MODE_PRIVATE);
         gender1.setOnItemSelectedListener(this);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sex);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -54,7 +55,7 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(View view) {
                 if (!(txt13.getText().toString().isEmpty() || txt14.getText().toString().isEmpty() || txt15.getText().toString().isEmpty() || txt16.getText().toString().isEmpty())) {
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/votersid.php",
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/deathcertificate.php",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -91,10 +92,10 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
 //Adding parameters to request
 
                             params.put("name", txt13.getText().toString());
-                            params.put("fhname", txt14.getText().toString());
-                            params.put("dob", txt15.getText().toString());
-                            params.put("sex",gender1.getSelectedItem().toString());
-                            params.put("address", txt16.getText().toString());
+                            params.put("place", txt14.getText().toString());
+                            params.put("DOD", txt15.getText().toString());
+                            params.put("sex", gender1.getSelectedItem().toString());
+                            params.put("fosname", txt16.getText().toString());
 
 //returning parameter
                             return params;
@@ -116,15 +117,62 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("name", txt13.getText().toString());
-                editor.apply();
-                Intent ias=new Intent(getApplicationContext(),Token.class);
-                startActivity(ias);
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/retrival2.php",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+//If we are getting success from server
+                                new SweetAlertDialog(DeathCertificate.this, SweetAlertDialog.WARNING_TYPE)
+                                        .setTitleText("use this id for tracking application status")
+                                        .setContentText("your id is")
+                                        .setConfirmText(response)
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
+                                                sDialog.dismissWithAnimation();
+                                            }
+                                        })
+                                        .show();
+
+                                try {
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json_obj = jsonArray.getJSONObject(i);
+                                        tokentwo = json_obj.getString("name");
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+//error handling
+                            }
+
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+//Adding parameters to request
+
+                        params.put("name", txt13.getText().toString());
+
+//returning parameter
+                        return params;
+                    }
+                };
+
+//Adding the string request to the queue
+                RequestQueue requestQueue = Volley.newRequestQueue(DeathCertificate.this);
+                requestQueue.add(stringRequest);
 
             }
         });
-
 
     }
 

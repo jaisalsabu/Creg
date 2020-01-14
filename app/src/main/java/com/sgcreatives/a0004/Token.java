@@ -38,7 +38,7 @@ import java.util.Map;
 public class Token extends AppCompatActivity {
         Button btnCreate,btnload;
         EditText txttox;
-        String name;
+        String name,token;
         SharedPreferences sharedPreferencess;
 
         @Override
@@ -47,23 +47,21 @@ public class Token extends AppCompatActivity {
             setContentView(R.layout.activity_token);
             txttox = findViewById(R.id.editText);
             btnload=findViewById(R.id.button);
-            btnCreate = (Button) findViewById(R.id.button2);
+            btnCreate = findViewById(R.id.button2);
             btnload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                             name = sharedPreferencess.getString("name", "");
-                            StringRequest stringRequest = new StringRequest(Request.Method.POST, "",
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/retrival1.php",
                                     new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
 //If we are getting success from server
-
                                             Toast.makeText(Token.this, response, Toast.LENGTH_LONG).show();
                                             try {
                                                 JSONArray jsonArray = new JSONArray(response);
                                                 for (int i = 0; i < jsonArray.length(); i++) {
                                                     JSONObject json_obj = jsonArray.getJSONObject(i);
-
                                                 }
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -97,7 +95,7 @@ public class Token extends AppCompatActivity {
 
                         }
                     });
-                
+
             btnCreate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

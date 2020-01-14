@@ -1,5 +1,6 @@
 package com.sgcreatives.a0004;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,14 +26,17 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class IncomeTax extends AppCompatActivity  {
     EditText txt21, txt22, txt23, txt24;
     Button btn9, btn10;
+    String tokenfour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_death_certificate);
+        setContentView(R.layout.activity_income_tax);
         txt21 = findViewById(R.id.bc_name);
         txt22 = findViewById(R.id.bc_place);
         txt23 = findViewById(R.id.bc_dob);
@@ -100,6 +104,56 @@ public class IncomeTax extends AppCompatActivity  {
             }
 
 
+        });
+        btn10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://hastalavistaresto.000webhostapp.com/civilregistry/retrival4.php",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+//If we are getting success from server
+                                Toast.makeText(IncomeTax.this, response, Toast.LENGTH_LONG).show();
+                                try {
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject json_obj = jsonArray.getJSONObject(i);
+                                        tokenfour = json_obj.getString("name");
+                                        new SweetAlertDialog(IncomeTax.this)
+                                                .setTitleText(tokenfour)
+                                                .show();
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+//error handling
+                            }
+
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+//Adding parameters to request
+
+                        params.put("name", txt21.getText().toString());
+
+//returning parameter
+                        return params;
+                    }
+                };
+
+//Adding the string request to the queue
+                RequestQueue requestQueue = Volley.newRequestQueue(IncomeTax.this);
+                requestQueue.add(stringRequest);
+
+            }
         });
 
 
