@@ -53,6 +53,7 @@
                 android:textColor="@color/grey1"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="20sp" />
+
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout

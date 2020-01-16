@@ -10,4 +10,8 @@
      <style name="SpinnerTheme" parent="android:Widget.Spinner">
     <item name="android:background">@drawable/bg_spinner</item>
 </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

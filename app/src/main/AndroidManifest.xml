@@ -10,6 +10,10 @@
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <meta-data
+        android:name="sendotp.key"
+        android:value="@string/sendotp_key" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
@@ -17,15 +21,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme">
+        <activity android:name=".Trackstat"></activity>
         <activity android:name=".Token" />
         <activity android:name=".forgotpassword" />
         <activity android:name=".IncomeTax" />
         <activity android:name=".Votersid" />
         <activity android:name=".DeathCertificate" />
-        <activity android:name=".BirthCertficate" />
+        <activity android:name=".BirthCertficate"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".optionspage" />
         <activity android:name=".SplashScreen">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -43,7 +48,4 @@
             android:theme="@style/Theme" />
     </application>
 
-    <meta-data
-        android:name="sendotp.key"
-        android:value="@string/sendotp_key" />
 </manifest>

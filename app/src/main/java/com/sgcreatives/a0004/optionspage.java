@@ -11,7 +11,7 @@ public class optionspage extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_optionspage);
         op1=findViewById(R.id.birthcertificate);

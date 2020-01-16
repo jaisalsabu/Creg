@@ -1,8 +1,13 @@
 package com.sgcreatives.a0004;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,7 +39,7 @@ public class BirthCertficate extends AppCompatActivity implements AdapterView.On
     Spinner gender;
     String token;
     Button btn3, btn4;
-
+Toolbar tool;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,19 @@ public class BirthCertficate extends AppCompatActivity implements AdapterView.On
         txt11 = findViewById(R.id.bc_dob);
         txt12 = findViewById(R.id.bc_fathername);
         btn3 = findViewById(R.id.bc_apply);
+        tool=findViewById(R.id.toolbar2);
+        tool.inflateMenu(R.menu.menu_bar);
+tool.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        int id=menuItem.getItemId();
+        switch (id)
+        {
+            case R.id.aa:startActivity(new Intent(BirthCertficate.this,Trackstat.class));
+        }
+        return false;
+    }
+});
         gender.setOnItemSelectedListener(this);
         ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, sex);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -174,6 +192,25 @@ public class BirthCertficate extends AppCompatActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> arg0) {
         Toast.makeText(BirthCertficate.this,"Sex not selected",Toast.LENGTH_SHORT).show();
 
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.aa:
+                  Intent ieleven=new Intent(getApplicationContext(),Trackstat.class);
+                  startActivity(ieleven);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

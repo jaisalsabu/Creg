@@ -1,6 +1,5 @@
 package com.sgcreatives.a0004;
-import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -183,6 +181,7 @@ public class DeathCertificate extends AppCompatActivity implements AdapterView.O
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         Toast.makeText(DeathCertificate.this,"Sex not selected",Toast.LENGTH_SHORT).show();
+
 
     }
 }
