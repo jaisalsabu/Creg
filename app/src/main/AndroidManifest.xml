@@ -29,7 +29,8 @@
         <activity android:name=".DeathCertificate" />
         <activity android:name=".BirthCertficate"
             android:theme="@style/AppTheme"/>
-        <activity android:name=".optionspage" />
+        <activity android:name=".optionspage"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
